@@ -222,6 +222,7 @@ pub struct Task {
 }
 
 impl From<taskchampion::Task> for Task {
+    /// loading task from task champion
     fn from(value: taskchampion::Task) -> Self {
         let tags: Vec<String> = value
             .get_tags()
@@ -237,7 +238,7 @@ impl From<taskchampion::Task> for Task {
             .get_user_defined_attributes()
             .map(|p| (p.0.to_string(), p.1.to_string()))
             .collect();
-
+        
         Self {
             id: None,
             uuid: value.get_uuid(),
@@ -246,7 +247,7 @@ impl From<taskchampion::Task> for Task {
             depends: Some(deps),
             // if a task has started, then it will have an end date.
             // If not, then it has no end date, end date should not be same as start date.
-            end: value.get_value("end").map(ToString::to_string),
+            end: value.get_value("start").map(ToString::to_string),
             project: value
                 .get_value(TaskProperties::Project.to_string())
                 .map(ToString::to_string),
